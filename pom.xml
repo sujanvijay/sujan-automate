@@ -10,7 +10,7 @@
     <version>1.0</version>
     <packaging>war</packaging>
 
-    <name>TES Institute Web Application</name>
+    <name>TES Institute Web Applications</name>
 
     <dependencies>
         <dependency>
