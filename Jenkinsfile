@@ -1,51 +1,39 @@
 pipeline {
     agent any
 
-    triggers {
-        githubPush()
-    }
-
-    environment {
-        IMAGE_NAME = "sujanvijay/frontendapp"
-        TAG = "${BUILD_NUMBER}"
+    tools {
+        maven 'maven3'
     }
 
     stages {
 
-        stage('Checkout Code') {
+        stage('Build') {
             steps {
-                git branch: 'main',
-                    credentialsId: 'sujan',
-                    url: 'https://github.com/sujanvijay/frontend_dep_docker.git'
+                sh 'mvn clean package'
             }
         }
 
-        stage('Build Maven Package') {
+        stage('Test') {
             steps {
-                sh 'mvn clean package -DskipTests'
+                sh 'mvn test'
             }
         }
 
-        stage('Build Docker Image') {
+        stage('SonarQube') {
             steps {
-                sh 'docker build -t $IMAGE_NAME:$TAG .'
+                sh 'mvn sonar:sonar'
             }
         }
 
-        stage('Push Docker Image') {
+        stage('Docker Build') {
             steps {
-                withDockerRegistry([credentialsId: 'Docker_CRED', url: '']) {
-                    sh 'docker push $IMAGE_NAME:$TAG'
-                }
+                sh 'docker build -t sujan-portfolio .'
             }
         }
 
-        stage('Deploy to Kubernetes') {
+        stage('Deploy') {
             steps {
-                sh """
-                kubectl set image deployment/frontend-deployment \
-                frontend=$IMAGE_NAME:$TAG
-                """
+                sh 'kubectl apply -f k8s/'
             }
         }
     }
