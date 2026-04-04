@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sujan-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: sujan
+  template:
+    metadata:
+      labels:
+        app: sujan
+    spec:
+      containers:
+      - name: sujan-container
+        image: sujan-portfolio
+        ports:
+        - containerPort: 8080
