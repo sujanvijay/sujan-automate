@@ -1,0 +1,23 @@
+<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee">
+
+    <servlet>
+        <servlet-name>status</servlet-name>
+        <servlet-class>com.tes.StatusServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>status</servlet-name>
+        <url-pattern>/api/status</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>health</servlet-name>
+        <servlet-class>com.tes.HealthServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>health</servlet-name>
+        <url-pattern>/health</url-pattern>
+    </servlet-mapping>
+
+</web-app>
